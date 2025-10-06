@@ -1,0 +1,84 @@
+<html>
+<head>
+    <title>INFO CUACA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        h2 {
+            text-align: center;
+        }
+        hr {
+            border: 1px solid black;
+        }
+        label {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        input[type="text"] {
+            padding: 5px;
+            font-size: 16px;
+        }
+        button {
+            font-weight: bold;
+            background: black;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #333;
+        }
+        #hasil {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <h2>INFO CUACA</h2>
+    <hr>
+    <label>Lokasi:</label>
+    <input type="text" id="lokasiInput" placeholder="Masukkan nama kota...">
+    <button id="getWeather">GET</button>
+    <hr>
+    <div id="hasil">
+        <b>Hasil:</b>
+        <div id="tampilan"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $("#getWeather").click(function() {
+            const kota = $("#lokasiInput").val();
+            if (!kota) {
+                alert("Masukkan nama kota terlebih dahulu!");
+                return;
+            }
+
+            const urlapi = "https://api.weatherapi.com/v1/current.json?key=80bb9199fdc44560a3311249250610&q=" + kota + "&aqi=no";
+            
+            $.ajax({
+                url: urlapi,
+                method: 'GET',
+                success: function(data) {
+                    console.log(data);
+                    const info = `
+                        <p><b>Negara:</b> ${data.location.country}</p>
+                        <p><b>Kota:</b> ${data.location.name}</p>
+                        <p><b>Suhu:</b> ${data.current.temp_c} °C</p>
+                        <p><b>Kelembapan:</b> ${data.current.humidity}%</p>
+                        <p><b>Kondisi:</b> ${data.current.condition.text}</p>
+                    `;
+                    $("#tampilan").html(info);
+                },
+                error: function() {
+                    $("#tampilan").html("<p style='color:red;'>Data tidak ditemukan. Coba lokasi lain.</p>");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
