@@ -57,6 +57,11 @@
                 return;
             }
              const urlapi = "https://api.weatherapi.com/v1/current.json?key=80bb9199fdc44560a3311249250610&q=" + kota + "&aqi=no";
-            
+            $.ajax({
+                url: urlapi,
+                method: 'GET',
+                success: function(data) {
+                    console.log(data);
+
 
 
